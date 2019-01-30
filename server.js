@@ -1,10 +1,22 @@
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3002
-const knex = require('./knex')
+const dotenv = require('dotenv').config()
+const environment = process.env.NODE_ENV || 'development'
+const config = require('./knexfile')[environment]
+const knex = require('knex')(config)
+
+const bodyParser = require('bodyParser')
+app.use(bodyParser.json())
 
 app.get('/', (req, res, next) => {
-    res.send('Hello World!')
+    knex('questions')
+        .then((rows) => {
+            res.send(rows)
+        })
+        .catch((err) => {
+            next(err)
+        })
 })
 
 app.listen(port, () => {
