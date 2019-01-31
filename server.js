@@ -6,7 +6,7 @@ const environment = process.env.NODE_ENV || 'development'
 const config = require('./knexfile')[environment]
 const knex = require('knex')(config)
 
-const bodyParser = require('bodyParser')
+const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 app.get('/', (req, res, next) => {
