@@ -21,8 +21,14 @@ app.get('/', (req, res, next) => {
         })
 })
 
-app.listen(port, () => {
-    console.log(`listening on port ${port}`)
+app.get('/comments', (req, res, next) => {
+    knex('comments')
+        .then((rows) => {
+            res.send(rows)
+        })
+        .catch((err) => {
+            next(err)
+        })
 })
 
 app.post('/comments', (req, res, next) => {
@@ -35,7 +41,7 @@ app.post('/comments', (req, res, next) => {
         })
 })
 
-//update whole wallaby:
+//edit:
 app.put('/comments/:id', (req, res, next) => {
     console.log('req.body', req.body)
     knex('comments').update(req.body).where('id', req.params.id).returning('*')
@@ -70,3 +76,7 @@ app.use(function (err, req, res, next) {
     res.status(404).send('Sorry, cannot find that!')
 })
 
+
+app.listen(port, () => {
+    console.log(`listening on port ${port}`)
+})
