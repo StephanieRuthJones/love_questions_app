@@ -21,6 +21,16 @@ app.get('/', (req, res, next) => {
         })
 })
 
+app.get('/users', (req, res, next) => {
+    knex('users')
+        .then((rows) => {
+            res.send(rows)
+        })
+        .catch((err) => {
+            next(err)
+        })
+})
+
 app.get('/comments', (req, res, next) => {
     knex('comments')
         .then((rows) => {
