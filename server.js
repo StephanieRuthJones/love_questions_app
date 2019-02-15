@@ -21,6 +21,22 @@ app.get('/', (req, res, next) => {
         })
 })
 
+app.get('/alluserdata', (req, res, next) => {
+    return knex('users')
+        .then(users => {
+            const getComments = users.map(user => {
+                return knex('comments')
+                    .where({ user_id: user.id })
+                    .then(comments => {
+                        user.comments = comments
+                        return user
+                    })
+            })
+            return Promise.all(getComments)
+        })
+        .then(result => res.send(result))
+})
+
 app.get('/users', (req, res, next) => {
     knex('users')
         .then((rows) => {
